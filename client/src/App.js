@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import homePage from "scenes/homePage";
+import HomePage from "scenes/homePage";
 import loginPage from "scenes/loginPage";
 import profilePage from "scenes/profilePage";
 import { useMemo } from "react";
@@ -9,8 +9,6 @@ import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "theme";
 import { Css } from "@mui/icons-material";
 
-
-
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -18,14 +16,14 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
-      <ThemeProvider theme = {theme}>
-        <CssBaseline/>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
 
-        <Routes>
-          <Route path="/" element={<loginPage />} />
-          <Route path="/homePage" element={<homePage />} />
-          <Route path="/profile/:userId" element={<profilePage />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<loginPage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/profile/:userId" element={<profilePage />} />
+          </Routes>
         </ThemeProvider>
       </BrowserRouter>
     </div>
