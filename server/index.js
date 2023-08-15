@@ -10,7 +10,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { register } from "./controller/auth.js";
 import authRoutes from "./routes/auth-routes.js";
+import userRoutes from "./routes/users-routes.js";
 import { logger } from "./logger.js";
+import { corsOptions } from "./middleware/core-middleware.js";
 /* CONFIGURATION */
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +25,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 /* File Storage */
 dotenv.config();
@@ -41,6 +43,7 @@ const upload = multer({ storage });
 app.post("/auth/register", upload.single("picture"), register);
 
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 logger.info(
   `[Index] Port:: ${process.env.PORT}, MongoUrl :: ${process.env.MONGO_URL}`
 );
