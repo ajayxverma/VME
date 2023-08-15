@@ -102,8 +102,8 @@ const Form = () => {
           })
         );
         navigate("/home");
-      } 
-    }else {
+      }
+    } else {
       const errorResponse = await loggedInResponse.json();
       alert(JSON.stringify(errorResponse));
     }
