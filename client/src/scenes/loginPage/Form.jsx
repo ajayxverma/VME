@@ -84,8 +84,6 @@ const Form = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDdiZDlkYzkwZGI3NmM3MDk3ZWI0ZCIsImlhdCI6MTY5MTkwMTUwM30.OCss9dl5qK4mbYivoqLb8yLkBUJMOR4YIEkbep65J1Y",
       },
       body: JSON.stringify(values),
     });
