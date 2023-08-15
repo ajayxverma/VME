@@ -8,6 +8,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "theme";
 import { Css } from "@mui/icons-material";
+import state from "state";
 
 function App() {
   const mode = useSelector((state) => state.mode);

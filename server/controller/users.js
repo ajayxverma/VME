@@ -1,10 +1,12 @@
-import User from "../model/user";
+import { logger } from "../logger.js";
+import User from "../model/user.js";
 
 /* Read */
 
 export const getUser = async (req, res) => {
   try {
     const { id } = req.params;
+    logger.info(`[getUser] id :: ${JSON.stringify(id)}`);
     const user = await User.findById(id);
     res.status(200).json(user);
   } catch (err) {

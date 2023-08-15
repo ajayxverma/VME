@@ -69,7 +69,8 @@ const Form = () => {
         method: "POST",
         body: formData,
       }
-    );
+    ).then((res) => res.json());
+    console.log(`savedUserResponse :: ${JSON.stringify(savedUserResponse)}`);
     const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm();
 
@@ -81,19 +82,30 @@ const Form = () => {
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDdiZDlkYzkwZGI3NmM3MDk3ZWI0ZCIsImlhdCI6MTY5MTkwMTUwM30.OCss9dl5qK4mbYivoqLb8yLkBUJMOR4YIEkbep65J1Y",
+      },
       body: JSON.stringify(values),
     });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate("/home");
+    if (loggedInResponse.ok) {
+      console.log(`loggedINResponse :: ${loggedInResponse}`);
+      const loggedIn = await loggedInResponse.json();
+      console.log(`loggedIn :: ${JSON.stringify(loggedIn)}`);
+      onSubmitProps.resetForm();
+      if (loggedIn) {
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
+        navigate("/home");
+      } 
+    }else {
+      const errorResponse = await loggedInResponse.json();
+      alert(JSON.stringify(errorResponse));
     }
   };
 
