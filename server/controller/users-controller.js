@@ -1,5 +1,5 @@
 import { logger } from "../logger.js";
-import User from "../model/user.js";
+import User from "../models/User-model.js";
 
 /* Read */
 
