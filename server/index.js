@@ -10,11 +10,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { register } from "./controller/auth.js";
 import authRoutes from "./routes/auth-routes.js";
+import { logger } from "./logger.js";
 /* CONFIGURATION */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config();
+
 const app = express();
 app.use(express.json());
 app.use(helmet());
@@ -24,9 +25,8 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
-
 /* File Storage */
-
+dotenv.config();
 const storage = multer.diskStorage({
   distination: function (req, file, cb) {
     cb(null, "public/assets");
@@ -41,11 +41,13 @@ const upload = multer({ storage });
 app.post("/auth/register", upload.single("picture"), register);
 
 app.use("/auth", authRoutes);
-
+logger.info(
+  `[Index] Port:: ${process.env.PORT}, MongoUrl :: ${process.env.MONGO_URL}`
+);
 /* MONGOOSE SETUP */
 const mongooseUrl = process.env.MONGO_URL;
 console.log(`${JSON.stringify(mongooseUrl)}`);
-const PORT = process.env.PORT || 6001;
+const port = process.env.PORT || 3001;
 mongoose
   .connect(process.env.MONGO_URL, {
     dbName: "vme",
@@ -53,6 +55,6 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`server Running at Port: ${PORT}`));
+    app.listen(port, () => console.log(`server Running at Port: ${port}`));
   })
   .catch((error) => console.log(`Error ${error}`));
