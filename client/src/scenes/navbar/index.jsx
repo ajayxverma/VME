@@ -1,34 +1,36 @@
-import { useState } from "react";
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import AdbIcon from "@mui/icons-material/Adb";
+import FlexBetween from "components/FlexBetween";
+import { useTheme } from "@emotion/react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { FormControl, InputBase, Select, useMediaQuery } from "@mui/material";
 import {
-  Box,
-  IconButton,
-  InputState,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  useTheme,
-  useMediaQuery,
-  AppBar,
-  InputBase,
-} from "@mui/material";
-import {
-  Search,
-  Message,
-  DarkMode,
-  LightMode,
-  Notifications,
-  Help,
-  Menu,
   Close,
+  DarkMode,
+  Help,
+  LightMode,
+  Message,
+  Notifications,
+  Search,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
-import { useNavigate } from "react-router-dom";
-import FlexBetween from "components/FlexBetween";
 
-const Navbar = () => {
-  const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const Navbar = ({userId, picturePath }) => {
+  const [isMobileMenuToggled, setIsMobileMenuToggled] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -41,9 +43,18 @@ const Navbar = () => {
   const alt = theme.palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;
+
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   return (
     <AppBar position="sticky">
-      <FlexBetween padding="1rem 6%" backgroundColor={alt}>
+      <FlexBetween padding="0.50rem 6%" backgroundColor={alt}>
         <FlexBetween gap="1.75rem">
           <Typography
             fontWeight="bold"
@@ -87,32 +98,39 @@ const Navbar = () => {
             <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
-            <FormControl variant="standard" value={fullName}>
-              <Select
-                value={fullName}
-                sx={{
-                  backgroundColor: neutralLight,
-                  width: "150px",
-                  borderRadius: "0.25rem",
-                  p: "0.25rem 1rem",
-                  "& .MuiSvgIcon-root": {
-                    pr: "0.25rem",
-                    width: "3rem",
-                  },
-                  "& .MuiSelect-select:focus": {
-                    backgroundColor: neutralLight,
-                  },
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={`http://localhost:3001/assets/${picturePath}`}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
                 }}
-                input={<InputBase />}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
               >
-                <MenuItem value={fullName}>
-                  <Typography>{fullName}</Typography>
+                <MenuItem onClick={() => navigate(`/profile/${userId}`)}>
+                  Profile Page
                 </MenuItem>
                 <MenuItem onClick={() => dispatch(setLogout())}>
                   Log Out
                 </MenuItem>
-              </Select>
-            </FormControl>
+              </Menu>
+            </Box>
           </FlexBetween>
         ) : (
           <IconButton
