@@ -2,8 +2,7 @@
 
 VertualMe is a social media application designed to connect people worldwide.
 
-<img src="/assets/image.png" alt="Home Page" alt="VertulMe HomPage"/>
--
+## <img src="/assets/image.png" alt="Home Page" alt="VertulMe HomPage"/>
 
 ## To Run Locally
 

@@ -4,12 +4,22 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { dark } from "@mui/material/styles/createPalette";
 import FlexBetween from "components/FlexBetween";
+import UserImage from "components/UserImage";
 //import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { setPost } from "state";
 
 const PostWidget = ({
@@ -51,20 +61,40 @@ const PostWidget = ({
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper m="0.5rem 0" padding="0.25rem 0.25rem">
       {/* <Friend
         friendId={postUserId}
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
       /> */}
-      <Typography color={main} sx={{ mt: "1rem" }}>
+      <Box display="inline-flex" onClick={() => Navigate(`/profile/${postUserId}`)}>
+        <Avatar src={`http://localhost:3001/assets/${userPicturePath}`} />
+        <Typography
+          
+          variant="h5"
+          color={dark}
+          display="inline-flex"
+          fontWeight="500"
+          sx={{
+            "&:hover": {
+              color: palette.primary.dark,
+              cursor: "pointer",
+            },
+          }}
+          padding="0.5rem 1rem"
+        >
+          {name}
+        </Typography>
+      </Box>
+
+      <Typography color={main} sx={{ mt: "1rem" }} >
         {description}
       </Typography>
       {picturePath && (
         <img
-          width="100%"
-          height="auto"
+        width="100%"
+        height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
           src={`http://localhost:3001/assets/${picturePath}`}

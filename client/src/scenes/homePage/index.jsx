@@ -12,7 +12,7 @@ const HomePage = () => {
 
   return (
     <Box>
-      <Navbar />
+      <Navbar userId={_id} picturePath={picturePath} />
       <Box
         width="100%"
         padding="2rem 6%"
