@@ -30,18 +30,17 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors(corsOptions));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+dotenv.config();
 
 /* File Storage */
-dotenv.config();
 const storage = multer.diskStorage({
-  distination: function (req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "public/assets");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
-
 const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
@@ -59,7 +58,7 @@ logger.info(
 /* MONGOOSE SETUP */
 const mongooseUrl = process.env.MONGO_URL;
 console.log(`${JSON.stringify(mongooseUrl)}`);
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 6000;
 mongoose
   .connect(process.env.MONGO_URL, {
     dbName: "vme",
