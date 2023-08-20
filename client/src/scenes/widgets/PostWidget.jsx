@@ -4,22 +4,12 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Divider,
-  IconButton,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { dark } from "@mui/material/styles/createPalette";
+import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
-import UserImage from "components/UserImage";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
 import { setPost } from "state";
 
 const PostWidget = ({
@@ -39,11 +29,7 @@ const PostWidget = ({
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
-
-  const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
-  useEffect(() => {
-    setCurrentLikeCount(likeCount);
-  }, [likeCount]);
+  const [currentLike, setCurrentLike] = useState(isLiked);
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
@@ -59,6 +45,7 @@ const PostWidget = ({
     });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
+    setCurrentLike(!currentLike);
   };
 
   return (
@@ -68,27 +55,8 @@ const PostWidget = ({
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
+        
       />
-      {/*  <Box display="inline-flex" onClick={() => Navigate(`/profile/${postUserId}`)}>
-        <Avatar src={`http://localhost:3001/assets/${userPicturePath}`} />
-        <Typography
-          
-          variant="h5"
-          color={dark}
-          display="inline-flex"
-          fontWeight="500"
-          sx={{
-            "&:hover": {
-              color: palette.primary.dark,
-              cursor: "pointer",
-            },
-          }}
-          padding="0.5rem 1rem"
-        >
-          {name}
-        </Typography>
-      </Box> */}
-
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
@@ -111,7 +79,7 @@ const PostWidget = ({
                 <FavoriteBorderOutlined />
               )}
             </IconButton>
-            <Typography>{currentLikeCount}</Typography>
+            <Typography>{likeCount}</Typography>
           </FlexBetween>
 
           <FlexBetween gap="0.3rem">
