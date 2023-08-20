@@ -15,9 +15,9 @@ import {
 import { dark } from "@mui/material/styles/createPalette";
 import FlexBetween from "components/FlexBetween";
 import UserImage from "components/UserImage";
-//import Friend from "components/Friend";
+import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { setPost } from "state";
@@ -40,35 +40,36 @@ const PostWidget = ({
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
 
+  const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
+  useEffect(() => {
+    setCurrentLikeCount(likeCount);
+  }, [likeCount]);
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    const response = await fetch(
-      `http://localhost:3001/posts/${postId}/posts`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: loggedInUserId }),
-      }
-    );
+    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: loggedInUserId }),
+    });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
 
   return (
     <WidgetWrapper m="0.5rem 0" padding="0.25rem 0.25rem">
-      {/* <Friend
+      <Friend
         friendId={postUserId}
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
-      /> */}
-      <Box display="inline-flex" onClick={() => Navigate(`/profile/${postUserId}`)}>
+      />
+      {/*  <Box display="inline-flex" onClick={() => Navigate(`/profile/${postUserId}`)}>
         <Avatar src={`http://localhost:3001/assets/${userPicturePath}`} />
         <Typography
           
@@ -86,15 +87,15 @@ const PostWidget = ({
         >
           {name}
         </Typography>
-      </Box>
+      </Box> */}
 
-      <Typography color={main} sx={{ mt: "1rem" }} >
+      <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
       {picturePath && (
         <img
-        width="100%"
-        height="auto"
+          width="100%"
+          height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
           src={`http://localhost:3001/assets/${picturePath}`}
@@ -110,7 +111,7 @@ const PostWidget = ({
                 <FavoriteBorderOutlined />
               )}
             </IconButton>
-            <Typography>{likeCount}</Typography>
+            <Typography>{currentLikeCount}</Typography>
           </FlexBetween>
 
           <FlexBetween gap="0.3rem">

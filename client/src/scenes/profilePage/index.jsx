@@ -14,6 +14,7 @@ import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import PostWidget from "scenes/widgets/PostWidget";
 import ResponsiveAppBar from "scenes/navbar/newNav";
+import FriendListWidget from "scenes/widgets/FriendListWidget";
 
 const ProfilePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
@@ -31,8 +32,11 @@ const ProfilePage = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
           <UserWidget userId={_id} picturePath={picturePath} />
+          <Box m="2rem 0" />
+          <FriendListWidget userId={_id} />
         </Box>
-        <Box flexDirection="column"
+        
+        <Box 
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >

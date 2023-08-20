@@ -60,7 +60,7 @@ const mongooseUrl = process.env.MONGO_URL;
 console.log(`${JSON.stringify(mongooseUrl)}`);
 const port = process.env.PORT || 6000;
 mongoose
-  .connect(process.env.MONGO_URL, {
+  .connect(mongooseUrl, {
     dbName: "vme",
     useNewUrlParser: true,
     useUnifiedTopology: true,

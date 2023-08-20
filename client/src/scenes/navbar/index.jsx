@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-const Navbar = ({userId, picturePath }) => {
+const Navbar = ({ userId, picturePath }) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -98,6 +98,8 @@ const Navbar = ({userId, picturePath }) => {
             <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
+
+            {/* PROFILE ICON */}
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
