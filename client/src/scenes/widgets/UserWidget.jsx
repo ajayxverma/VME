@@ -51,7 +51,7 @@ const UserWidget = ({ userId, picturePath }) => {
   return (
     <WidgetWrapper>
       {/* FIRST ROW */}
-      <FlexBetween
+      <FlexBetween 
         gap="0.5rem"
         pb="1.1rem"
         onClick={() => navigate(`/profile/${userId}`)}
