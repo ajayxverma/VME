@@ -120,8 +120,8 @@ const MyPostWidget = ({ picturePath }) => {
       )}
 
       <Divider sx={{ margin: "0.75rem 0" }} />
-
-      <FlexBetween>
+      <FlexBetween gap="2rem">
+      <FlexBetween gap="0.75rem">
         <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
           <ImageOutlined sx={{ color: mediumMain }} />
           <Typography
@@ -131,7 +131,6 @@ const MyPostWidget = ({ picturePath }) => {
             Image
           </Typography>
         </FlexBetween>
-
         {isNonMobileScreens ? (
           <>
             <FlexBetween gap="0.25rem">
@@ -154,18 +153,21 @@ const MyPostWidget = ({ picturePath }) => {
             <MoreHorizOutlined sx={{ color: mediumMain }} />
           </FlexBetween>
         )}
-
+        </FlexBetween>
+        <FlexBetween>
         <Button
           disabled={!post}
           onClick={handlePost}
           sx={{
-            color: palette.background.alt,
+            color: palette.background.primary,
             backgroundColor: palette.primary.main,
             borderRadius: "3rem",
           }}
         >
           POST
         </Button>
+        </FlexBetween>
+        
       </FlexBetween>
     </WidgetWrapper>
   );

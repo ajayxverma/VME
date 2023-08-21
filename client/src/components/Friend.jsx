@@ -4,7 +4,7 @@ import {
   PersonAddOutlined,
   PersonRemoveOutlined,
 } from "@mui/icons-material";
-import { Box, Chip, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriends } from "state";
@@ -92,12 +92,7 @@ const Friend = ({
         </IconButton>
         </FlexBetween>
       ) : undefined}
-      { currentUserId == _id? 
-          (<FlexBetween gap="0.5rem">
-          <DeleteOutlineOutlined /* onClick={() => deletePost()}  */ sx={{ color: primaryDark }} />
-        </FlexBetween>) : undefined
-      }
-    
+
       </FlexBetween>
      
       
