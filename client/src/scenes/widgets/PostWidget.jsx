@@ -1,5 +1,6 @@
 import {
   ChatBubbleOutlineOutlined,
+  DeleteOutlineRounded,
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
@@ -10,7 +11,7 @@ import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "state";
+import { deletePost, setPost } from "state";
 
 const PostWidget = ({
   postId,
@@ -24,6 +25,8 @@ const PostWidget = ({
   comments,
 }) => {
   const [isComments, setIsComments] = useState(false);
+  const [isPostDeleted, setIsPostDeleted] = useState(false);
+  const [currentPost, setCurrentPost] = useState("");
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
@@ -48,6 +51,26 @@ const PostWidget = ({
     setCurrentLike(!currentLike);
   };
 
+  const deleteCurrentPot = async () => {
+    const response = await fetch(
+      `http://localhost:3001/posts/${loggedInUserId}/${postId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(response);
+    if (response.ok) {
+      setIsPostDeleted(true);
+      console.log(`FrontEnd :: Post Delete Succcessfully`);
+    }
+    dispatch(deletePost(postId));
+    setCurrentPost("");
+  };
+
   return (
     <WidgetWrapper m="0.5rem 0" padding="0.25rem 0.25rem">
       <Friend
@@ -55,7 +78,6 @@ const PostWidget = ({
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
-        
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
@@ -81,7 +103,6 @@ const PostWidget = ({
             </IconButton>
             <Typography>{likeCount}</Typography>
           </FlexBetween>
-
           <FlexBetween gap="0.3rem">
             <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
@@ -90,9 +111,19 @@ const PostWidget = ({
           </FlexBetween>
         </FlexBetween>
 
-        <IconButton>
-          <ShareOutlined />
-        </IconButton>
+        <FlexBetween gap="0.5rem">
+          <IconButton>
+            <ShareOutlined />
+          </IconButton>
+          {/* Delete Icon button */}
+          {postUserId == loggedInUserId ? (
+            <DeleteOutlineRounded
+              sx={{ color: primary }}
+              onChange={(e) => setCurrentPost(e.target.value)}
+              onClick={() => deleteCurrentPot()}
+            />
+          ) : undefined}
+        </FlexBetween>
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">

@@ -49,9 +49,9 @@ const UserWidget = ({ userId, picturePath }) => {
   } = user;
 
   return (
-    <WidgetWrapper>
+    <WidgetWrapper position="-webkit-sticky">
       {/* FIRST ROW */}
-      <FlexBetween 
+      <FlexBetween
         gap="0.5rem"
         pb="1.1rem"
         onClick={() => navigate(`/profile/${userId}`)}
